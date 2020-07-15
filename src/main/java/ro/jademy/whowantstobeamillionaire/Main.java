@@ -1,75 +1,84 @@
 package ro.jademy.whowantstobeamillionaire;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+    static Scanner sc=new Scanner(System.in);
     public static void main(String[] args) {
+
         WhoWantsToBeAMillionaire becomingAMillionaire = initWhoWantsToBeAMillionaire();
 
         do {
             playGame(becomingAMillionaire);
-        } while (becomingAMillionaire.gameOn());
+        } while (!becomingAMillionaire.player.isPlayerWrong());
 
     }
 
     public static void playGame(WhoWantsToBeAMillionaire becomingAMillionaire) {
-        becomingAMillionaire.welcomeMessage();
+        do {
+            becomingAMillionaire.printQuestion();
+            becomingAMillionaire.printAnswers();
+            System.out.println("Please enter answer:");
+            String answer=sc.next();
+            becomingAMillionaire.validateAnswer(answer);
+        }while (!becomingAMillionaire.player.isPlayerWrong());
     }
 
     public static WhoWantsToBeAMillionaire initWhoWantsToBeAMillionaire() {
         Question q1 = new Question("In children’s stories, how many wishes are granted by a genie or fairy?",
-                "c)Three", "a)One", "b)Two", "c)Four", 1);
+                 "a)One", "b)Two", "c)Three", "d)Four","c");
 
         Question q2 = new Question("Which legal document states a person’s wishes regarding the disposal " +
-                "of their property after death?", "c)Will", "a)Would", "b)Shall",
-                "c)Should", 1);
+                "of their property after death?", "a)Will", "b)Would", "c)Shall",
+                "d)Should", "a");
 
         Question q3 = new Question("Which of these phrases refers to a brief success?",
-                "c)Flash in the pan", "a)Blaze in the pot", "b)Spark in the tub",
-                "c)Flare in the jug", 1);
+                "a)Flash in the pan", "b)Blaze in the pot", "c)Spark in the tub",
+                "d)Flare in the jug", "b");
 
-        Question q4 = new Question("Which of these is a type of hat?", "c)Pork pie",
-                "a)Sausage roll", "b)Scotch egg", "c)Potato crisp", 1);
+        Question q4 = new Question("Which of these is a type of hat?", "a)Pork pie",
+                "b)Sausage roll", "c)Scotch egg", "d)Potato crisp", "a");
 
         Question q5 = new Question("In which sport do two teams pull at the opposite ends of a rope?",
-                "c)Tug of war", "a)Basketball", "b)Ice hockey",
-                "c)Polo", 1);
+                "a)Basketball", "b)Tug of war", "c)Ice hockey",
+                "d)Polo", "b");
 
-        Question q6 = new Question("Where does a cowboy wear chaps?", "c)On his legs",
-                "a)On his head", "b)On his arms", "c)On his hands", 2);
+        Question q6 = new Question("Where does a cowboy wear chaps?", "a)On his hands)",
+                "b)On his head", "c)On his arms", "d)On his legs", "d");
 
         Question q7 = new Question("In 1581, Sir Francis Drake became mayor of which city?",
-                "c)Plymouth", "a)Hull", "b)Glasgow", "c)Bristol",
-                2);
+                "a)Bristol", "b)Hull", "c)Glasgow", "d)Plymouth",
+                "d");
 
         Question q8 = new Question("The Walrus And The Carpenter is a well-known verse in which children’s novel?",
-                "c)Though The Looking Glass", "a)Swallows And Amazons",
-                "b)The Hobbit", "c)Stig Of The Dump", 2);
+                "a)Through The Looking Glass", "b)Swallows And Amazons",
+                "c)The Hobbit", "d)Stig Of The Dump", "a");
 
         Question q9 = new Question("Which of these have to pass a test on ‘The Knowledge’ to get a licence?",
-                "c)Police officers", "a)Taxi drivers", "b)Bus Drivers",
-                "c)Ambulance drivers", 2);
+                "a)Taxi drivers", "b)Police officers", "c)Bus Drivers",
+                "d)Ambulance drivers", "b");
 
         Question q10 = new Question("In 2001, Donald Campbell’s Bluebird was recovered from which lake?",
-                "c)Coniston Water", "a)Bala Lake", "b)Kleder Water",
-                "c)Lake Windermere", 2);
+                "a)Kleder Water", "b)Bala Lake", "c)Coniston Water",
+                "d)Lake Windermere", "c");
 
-        Question q11 = new Question("In Welsh, what does 'afon' mean?", "c)River",
-                "a)Meadow", "b)Pool", "c)River", 3);
+        Question q11 = new Question("In Welsh, what does 'afon' mean?", "a)Lake",
+                "b)Meadow", "c)Pool", "d)River", "d");
 
         Question q12 = new Question("Which king wrote a famous denunciation of smoking?",
-                "c)James I", "a)Richard I", "b)George I",
-                "c)William I", 3);
+                "a)William I", "b)Richard I", "c)George I",
+                "d)James I", "d");
 
-        Question q13 = new Question("The young of which creature is known as a squab?", "c)Octopus",
-                "a)Salmon", "b)Horse", "c)Pigeon", 3);
+        Question q13 = new Question("The young of which creature is known as a squab?", "a)Octopus",
+                "b)Salmon", "c)Horse", "d)Pigeon", "a");
 
-        Question q14 = new Question("Who is the patron saint of Spain?", "c)St. James",
-                "a)St. John", "b)St. Benedict", "c)St. Peter", 3);
+        Question q14 = new Question("Who is the patron saint of Spain?", "a)St. James",
+                "b)St. John", "c)St. Benedict", "d)St. Peter", "a");
 
         Question q15 = new Question("Which of these is not one of the American Triple Crown horse races?",
-                "c)Arlington Million", "a)Belmont Stakes", "b)Kentucky Derby",
-                "c)Preakness Stakes", 3);
+                "a)Preakness Stakes", "b)Belmont Stakes", "c)Kentucky Derby",
+                "d)Arlington Million", "d");
 
         ArrayList<Question> questionsList = new ArrayList<>();
         questionsList.add(q1);

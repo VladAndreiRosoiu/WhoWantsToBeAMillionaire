@@ -4,20 +4,9 @@ public class Player {
 
     //private String fullName;
     private int gainedMoney=0;
-    private int tries=1;
+    private boolean isPlayerWrong=false;
     private boolean hasFiftyFifty=true;
 
-//    //public Player(String fullName){
-//        //this.fullName=fullName;
-//    }
-
-//    public String getFullName() {
-//        return fullName;
-//    }
-//
-//    public void setFullName(String fullName) {
-//        this.fullName = fullName;
-//    }
 
     public int getGainedMoney() {
         return gainedMoney;
@@ -27,14 +16,6 @@ public class Player {
         this.gainedMoney = gainedMoney;
     }
 
-    public int getTries() {
-        return tries;
-    }
-
-    public void setTries(int tries) {
-        this.tries = tries;
-    }
-
     public boolean isHasFiftyFifty() {
         return hasFiftyFifty;
     }
@@ -42,4 +23,13 @@ public class Player {
     public void setHasFiftyFifty(boolean hasFiftyFifty) {
         this.hasFiftyFifty = hasFiftyFifty;
     }
+
+    public boolean isPlayerWrong(){
+        return isPlayerWrong;
+    }
+
+    public void setPlayerWrong(boolean isPlayerWrong){
+        this.isPlayerWrong=isPlayerWrong;
+    }
+
 }

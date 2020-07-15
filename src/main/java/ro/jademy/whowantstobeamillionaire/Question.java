@@ -3,42 +3,44 @@ package ro.jademy.whowantstobeamillionaire;
 public class Question {
 
     private String question;
+    private String answer1;
+    private String answer2;
+    private String answer3;
+    private String answer4;
     private String correctAnswer;
-    private String wrongAnswer1;
-    private String wrongAnswer2;
-    private String wrongAnswer3;
-    private int difficultyLevel;
 
-    public Question(String question, String correctAnswer, String wrongAnswer1, String wrongAnswer2,String wrongAnswer3, int difficultyLevel){
-        this.question=question;
-        this.correctAnswer=correctAnswer;
-        this.wrongAnswer1=wrongAnswer1;
-        this.wrongAnswer2=wrongAnswer2;
-        this.wrongAnswer3=wrongAnswer3;
-        this.difficultyLevel=difficultyLevel;
+    public Question(String question, String answer1, String answer2, String answer3, String answer4,
+                    String correctAnswer) {
+        this.question = question;
+        this.answer1=answer1;
+        this.answer2=answer2;
+        this.answer3=answer3;
+        this.answer4=answer4;
+        this.correctAnswer = correctAnswer;
     }
 
     public String getQuestion() {
         return question;
     }
 
+    public String getAnswer1() {
+        return answer1;
+    }
+
+    public String getAnswer2() {
+        return answer2;
+    }
+
+    public String getAnswer3() {
+        return answer3;
+    }
+
+    public String getAnswer4() {
+        return answer4;
+    }
+
     public String getCorrectAnswer() {
         return correctAnswer;
     }
 
-    public String getWrongAnswer1() {
-        return wrongAnswer1;
-    }
-
-    public String getWrongAnswer2() {
-        return wrongAnswer2;
-    }
-
-    public String getWrongAnswer3() {
-        return wrongAnswer3;
-    }
-
-    public int getDifficultyLevel() {
-        return difficultyLevel;
-    }
 }
