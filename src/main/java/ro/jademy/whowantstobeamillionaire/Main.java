@@ -8,6 +8,11 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //TODO - fix random question list - duplicated questions
+        //TODO - fix 50% player option - does not remove 2 answers all the time
+        //TODO - fix quit option for player
+        //TODO - fix answer validation
+
         WhoWantsToBeAMillionaire becomingAMillionaire = initWhoWantsToBeAMillionaire();
 
         do {

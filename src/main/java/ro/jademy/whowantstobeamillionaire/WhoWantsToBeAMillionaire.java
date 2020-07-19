@@ -116,9 +116,9 @@ public class WhoWantsToBeAMillionaire {
     }
 
     public void validateAnswer(String answer, ArrayList<Question> questionList) {
-        if (answer.equalsIgnoreCase(questionList.get(questionNumber).getCorrectAnswer())) {
+        if (answer.equals(questionList.get(questionNumber).getCorrectAnswer())) {
             System.out.println("Correct Answer!");
-            continueGame(questionList);
+            continueGameIfAnswerIsCorrect(questionList);
         } else {
             System.out.println("Wrong!");
             printGameOver();
@@ -126,7 +126,7 @@ public class WhoWantsToBeAMillionaire {
         }
     }
 
-    public void continueGame(ArrayList<Question> questionList) {
+    public void continueGameIfAnswerIsCorrect(ArrayList<Question> questionList) {
         earnedAmount += questionList.get(questionNumber).getValue();
         setEarnedMoneyAtThreshold();
         questionNumber++;
@@ -155,4 +155,5 @@ public class WhoWantsToBeAMillionaire {
                 player.setPlayerWrong(true);
             }
     }
+
 }
