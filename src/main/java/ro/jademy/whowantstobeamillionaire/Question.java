@@ -8,15 +8,19 @@ public class Question {
     private String answer3;
     private String answer4;
     private String correctAnswer;
+    private int difficultyLevel;
+    private int value;
 
     public Question(String question, String answer1, String answer2, String answer3, String answer4,
-                    String correctAnswer) {
+                    String correctAnswer, int difficultyLevel, int value) {
         this.question = question;
         this.answer1=answer1;
         this.answer2=answer2;
         this.answer3=answer3;
         this.answer4=answer4;
         this.correctAnswer = correctAnswer;
+        this.difficultyLevel=difficultyLevel;
+        this.value=value;
     }
 
     public String getQuestion() {
@@ -43,4 +47,11 @@ public class Question {
         return correctAnswer;
     }
 
+    public int getDifficultyLevel(){
+        return difficultyLevel;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }
