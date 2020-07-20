@@ -11,7 +11,7 @@ public class Main {
         //TODO - fix random question list - duplicated questions
         //TODO - fix 50% player option - does not remove 2 answers all the time
         //TODO - fix quit option for player
-        //TODO - fix answer validation
+        //TODO - fix ending game when quiting and starting a new one from the beginning
 
         WhoWantsToBeAMillionaire becomingAMillionaire = initWhoWantsToBeAMillionaire();
 
@@ -21,7 +21,7 @@ public class Main {
     }
 
     public static void playGame(WhoWantsToBeAMillionaire becomingAMillionaire) {
-        String answer;
+        String answer, option;
         ArrayList<Question> questionList = becomingAMillionaire.createRandomQuestionList();
         becomingAMillionaire.printWelcomeMessage();
         becomingAMillionaire.printRules();
@@ -29,7 +29,7 @@ public class Main {
         answer = sc.next();
         if (becomingAMillionaire.startGame(answer)) {
             do {
-                if (becomingAMillionaire.questionNumber==4||becomingAMillionaire.questionNumber==9||becomingAMillionaire.questionNumber==13){
+                if (becomingAMillionaire.questionNumber==5||becomingAMillionaire.questionNumber==10||becomingAMillionaire.questionNumber==13){
                     System.out.println("You can't quit now and keep your "+becomingAMillionaire.earnedAmount+ ", or you can continue and try to " +
                             "earn 1.000.000 $!!!");
                     System.out.println("Press 1 to quit and keep your earnings or 2 to continue:");
@@ -39,10 +39,11 @@ public class Main {
                 becomingAMillionaire.printQuestion(questionList);
                 becomingAMillionaire.printAnswers(questionList);
                 System.out.println("Please enter 1 for 50% or 2 to continue:");
-                answer = sc.next();
-                becomingAMillionaire.answeringOptions(answer, questionList);
+                option = sc.next();
+                becomingAMillionaire.answeringOptions(option, questionList);
                 System.out.println("Please enter your answer:");
-                answer = sc.next();
+                sc.skip("\n");
+                answer = sc.nextLine();
                 becomingAMillionaire.validateAnswer(answer, questionList);
             } while (!becomingAMillionaire.player.isPlayerWrong());
         }

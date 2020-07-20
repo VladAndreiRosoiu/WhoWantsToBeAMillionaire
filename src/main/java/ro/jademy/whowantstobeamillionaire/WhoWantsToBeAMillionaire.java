@@ -116,7 +116,7 @@ public class WhoWantsToBeAMillionaire {
     }
 
     public void validateAnswer(String answer, ArrayList<Question> questionList) {
-        if (answer.equals(questionList.get(questionNumber).getCorrectAnswer())) {
+        if (answer.equalsIgnoreCase(questionList.get(questionNumber).getCorrectAnswer())) {
             System.out.println("Correct Answer!");
             continueGameIfAnswerIsCorrect(questionList);
         } else {
