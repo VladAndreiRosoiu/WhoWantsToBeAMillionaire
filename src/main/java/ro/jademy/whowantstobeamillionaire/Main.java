@@ -1,6 +1,10 @@
 package ro.jademy.whowantstobeamillionaire;
 
+import ro.jademy.whowantstobeamillionaire.model.Player;
+import ro.jademy.whowantstobeamillionaire.model.Question;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -8,48 +12,54 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //TODO - fix random question list - duplicated questions
         //TODO - fix 50% player option - does not remove 2 answers all the time
-        //TODO - fix quit option for player
-        //TODO - fix ending game when quiting and starting a new one from the beginning
 
-        WhoWantsToBeAMillionaire becomingAMillionaire = initWhoWantsToBeAMillionaire();
+        Game millionaire = initWhoWantsToBeAMillionaire();
 
         do {
-            playGame(becomingAMillionaire);
-        } while (!becomingAMillionaire.player.isPlayerWrong());
+            playGame(millionaire);
+        } while (!millionaire.player.isPlayerWrong());
     }
 
-    public static void playGame(WhoWantsToBeAMillionaire becomingAMillionaire) {
+    public static void playGame(Game millionaire) {
         String answer, option;
-        ArrayList<Question> questionList = becomingAMillionaire.createRandomQuestionList();
-        becomingAMillionaire.printWelcomeMessage();
-        becomingAMillionaire.printRules();
-        System.out.println("Let's start, are you ready? Yes/No:");
-        answer = sc.next();
-        if (becomingAMillionaire.startGame(answer)) {
-            do {
-                if (becomingAMillionaire.questionNumber==5||becomingAMillionaire.questionNumber==10||becomingAMillionaire.questionNumber==13){
-                    System.out.println("You can't quit now and keep your "+becomingAMillionaire.earnedAmount+ ", or you can continue and try to " +
-                            "earn 1.000.000 $!!!");
-                    System.out.println("Press 1 to quit and keep your earnings or 2 to continue:");
-                    answer=sc.next();
-                    becomingAMillionaire.quitingOptionForPlayer(answer);
-                }
-                becomingAMillionaire.printQuestion(questionList);
-                becomingAMillionaire.printAnswers(questionList);
-                System.out.println("Please enter 1 for 50% or 2 to continue:");
-                option = sc.next();
-                becomingAMillionaire.answeringOptions(option, questionList);
-                System.out.println("Please enter your answer:");
-                sc.skip("\n");
-                answer = sc.nextLine();
-                becomingAMillionaire.validateAnswer(answer, questionList);
-            } while (!becomingAMillionaire.player.isPlayerWrong());
-        }
+
+        do {
+            List<Question> qlist1 = millionaire.createRandomQuestionList(5,1);
+            List<Question> qlist2 = millionaire.createRandomQuestionList(5,2);
+            List<Question> qlist3 = millionaire.createRandomQuestionList(4,3);
+            List<Question> qlist4 = millionaire.createRandomQuestionList(1,4);
+            List<Question> finalList=millionaire.finalQuestionList(qlist1,qlist2,qlist3,qlist4);
+
+            millionaire.printWelcomeMessage();
+            millionaire.printRules();
+            System.out.println("Let's start, are you ready? Yes/No:");
+            answer = sc.next();
+
+            if (millionaire.startGame(answer)) {
+                do {
+                    millionaire.printQuestion((ArrayList<Question>) finalList);
+                    millionaire.printAnswers((ArrayList<Question>) finalList);
+                    System.out.println("Please enter 1 for 50% or 2 to continue:");
+                    option = sc.next();
+                    millionaire.answeringOptions(option, (ArrayList<Question>) finalList);
+                    System.out.println("Please enter your answer:");
+                    sc.skip("\n");
+                    answer = sc.nextLine();
+                    millionaire.validateAnswer(answer, (ArrayList<Question>) finalList);
+                    if (millionaire.questionNumber == 5 || millionaire.questionNumber == 10 || millionaire.questionNumber == 13) {
+                        System.out.println("You can't quit now and keep your " + millionaire.earnedAmount + ", or you can continue and try to " +
+                                "earn 1.000.000 $!!!");
+                        System.out.println("Press 1 to quit and keep your earnings or 2 to continue:");
+                        answer = sc.next();
+                        millionaire.quitingOptionForPlayer(answer);
+                    }
+                } while (!millionaire.player.isPlayerWrong());
+            }
+        } while (!millionaire.gameIsRunning);
     }
 
-    public static WhoWantsToBeAMillionaire initWhoWantsToBeAMillionaire() {
+    public static Game initWhoWantsToBeAMillionaire() {
         Question q1 = new Question("In children’s stories, how many wishes are granted by a genie or fairy?",
                 "a)One", "b)Two", "c)Three", "d)Four", "c)Three",
                 1, 100);
@@ -91,7 +101,7 @@ public class Main {
                 "a)Basketball", "b)Tug of war", "c)Ice hockey", "d)Polo",
                 "b)Tug of war", 1, 100);
 
-        Question q11 = new Question("Where does a cowboy wear chaps?", "a)On his hands)",
+        Question q11 = new Question("Where does a cowboy wear chaps?", "a)On his hands",
                 "b)On his head", "c)On his arms", "d)On his legs", "d)On his legs",
                 2, 500);
 
@@ -208,6 +218,6 @@ public class Main {
 
         Player player = new Player();
 
-        return new WhoWantsToBeAMillionaire(entireQuestionList, player);
+        return new Game(entireQuestionList, player);
     }
 }

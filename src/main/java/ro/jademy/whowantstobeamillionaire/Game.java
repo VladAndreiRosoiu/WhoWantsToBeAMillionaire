@@ -1,16 +1,23 @@
 package ro.jademy.whowantstobeamillionaire;
 
-import java.util.ArrayList;
-import java.util.Random;
+import ro.jademy.whowantstobeamillionaire.model.Player;
+import ro.jademy.whowantstobeamillionaire.model.Question;
 
-public class WhoWantsToBeAMillionaire {
-    ArrayList<Question> questions;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class Game {
+    ArrayList<Question> entireQuestionList;
     Player player;
+    boolean gameIsRunning;
     int earnedAmount;
     int questionNumber = 0;
 
-    public WhoWantsToBeAMillionaire(ArrayList<Question> questions, Player player) {
-        this.questions = questions;
+    public Game(ArrayList<Question> entireQuestionList, Player player) {
+        this.entireQuestionList = entireQuestionList;
         this.player = player;
     }
 
@@ -28,42 +35,36 @@ public class WhoWantsToBeAMillionaire {
     public boolean startGame(String answer) {
         if (answer.equalsIgnoreCase("yes")) {
             System.out.println("Let the game begin!");
+            gameIsRunning = true;
             return true;
         } else {
             System.out.println("Come back again when you're ready!");
-            System.out.println("----------------------------------");
             return false;
         }
     }
 
-    public ArrayList<Question> createRandomQuestionList() {
-        ArrayList<Question> questionList = new ArrayList<>();
-        Random rdm = new Random();
-        int number;
-        int min;
-        int max;
-        for (int i = 0; i < 15; i++) {
-            if (i < 5) {
-                number = rdm.nextInt(9);
-                questionList.add(questions.get(number));
-            } else if (i > 4 && i < 10) {
-                min = 10;
-                max = 19;
-                number = (int) (Math.random() * (max - min + 1) + min);
-                questionList.add(questions.get(number));
-            } else if (i > 9 && i < 14) {
-                min = 20;
-                max = 27;
-                number = (int) (Math.random() * (max - min + 1) + min);
-                questionList.add(questions.get(number));
-            } else if (i == 14) {
-                min = 28;
-                max = 29;
-                number = (int) (Math.random() * (max - min + 1) + min);
-                questionList.add(questions.get(number));
+    public List<Question> createRandomQuestionList(int numberOfQuestions, int difficulty) {
+        List<Question> givenDiffRandomQuestion = new ArrayList<>();
+        List<Question> temporaryQuestionList = new ArrayList<>();
+
+        for (Question question : entireQuestionList) {
+            if (question.getDifficultyLevel() == difficulty) {
+                temporaryQuestionList.add(question);
             }
         }
-        return questionList;
+        Random rdm = new Random();
+        for (int i = 0; i < numberOfQuestions; i++) {
+            int randomIndex = rdm.nextInt(temporaryQuestionList.size());
+            givenDiffRandomQuestion.add(temporaryQuestionList.remove(randomIndex));
+        }
+        return givenDiffRandomQuestion;
+    }
+
+    public List<Question> finalQuestionList(List<Question> list1, List<Question> list2, List<Question> list3, List<Question> list4) {
+        List<Question> tempList1 = Stream.concat(list1.stream(), list2.stream()).collect(Collectors.toList());
+        List<Question> tempList2 = Stream.concat(list3.stream(), list4.stream()).collect(Collectors.toList());
+        List<Question> finalList = Stream.concat(tempList1.stream(), tempList2.stream()).collect(Collectors.toList());
+        return finalList;
     }
 
     public void printQuestion(ArrayList<Question> questionList) {
@@ -95,13 +96,13 @@ public class WhoWantsToBeAMillionaire {
         }
     }
 
-    public void removeTwoRandomAnswers(ArrayList<String> answerList, ArrayList<Question> questionList) {
-        for (int i = 0; i < 2; i++) {
+    public void removeTwoRandomAnswers(ArrayList<String> answerList, ArrayList<Question> questions) {
+        for (int i = 0; i < answerList.size(); i++) {
             Random rdm = new Random();
-            int randomAnswerToRemove = rdm.nextInt(3);
-            if (!answerList.get(randomAnswerToRemove).equalsIgnoreCase
-                    (questionList.get(questionNumber).getCorrectAnswer())) {
-                answerList.remove(randomAnswerToRemove);
+            int randomIndex = rdm.nextInt(answerList.size());
+
+            if (!answerList.get(i).equalsIgnoreCase(questions.get(questionNumber).getCorrectAnswer())) {
+                answerList.remove(randomIndex);
             }
         }
     }
@@ -123,6 +124,7 @@ public class WhoWantsToBeAMillionaire {
             System.out.println("Wrong!");
             printGameOver();
             player.setPlayerWrong(true);
+            gameIsRunning = false;
         }
     }
 
@@ -144,16 +146,17 @@ public class WhoWantsToBeAMillionaire {
         }
     }
 
-    public void printGameOver(){
+    public void printGameOver() {
         System.out.println("Thank you for playing!");
         System.out.println("You have earned " + player.getGainedMoney());
     }
 
-    public void quitingOptionForPlayer(String answer){
-            if (answer.equalsIgnoreCase("1")){
-                printGameOver();
-                player.setPlayerWrong(true);
-            }
+    public void quitingOptionForPlayer(String answer) {
+        if (answer.equalsIgnoreCase("1")) {
+            printGameOver();
+            player.setPlayerWrong(true);
+            gameIsRunning = false;
+        }
     }
 
 }
