@@ -1,7 +1,8 @@
-package ro.jademy.whowantstobeamillionaire;
+package ro.jademy.millionaire;
 
-import ro.jademy.whowantstobeamillionaire.model.Player;
-import ro.jademy.whowantstobeamillionaire.model.Question;
+import ro.jademy.millionaire.model.Game;
+import ro.jademy.millionaire.model.Player;
+import ro.jademy.millionaire.model.Question;
 
 import java.util.ArrayList;
 import java.util.List;

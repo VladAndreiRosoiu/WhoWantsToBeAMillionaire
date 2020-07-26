@@ -1,4 +1,4 @@
-package ro.jademy.whowantstobeamillionaire.model;
+package ro.jademy.millionaire.model;
 
 public class Question {
 

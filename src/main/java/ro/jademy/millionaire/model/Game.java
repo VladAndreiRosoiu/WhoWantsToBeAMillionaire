@@ -1,7 +1,4 @@
-package ro.jademy.whowantstobeamillionaire;
-
-import ro.jademy.whowantstobeamillionaire.model.Player;
-import ro.jademy.whowantstobeamillionaire.model.Question;
+package ro.jademy.millionaire.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +8,10 @@ import java.util.stream.Stream;
 
 public class Game {
     ArrayList<Question> entireQuestionList;
-    Player player;
-    boolean gameIsRunning;
-    int earnedAmount;
-    int questionNumber = 0;
+    public Player player;
+    public boolean gameIsRunning;
+    public int earnedAmount;
+    public int questionNumber = 0;
 
     public Game(ArrayList<Question> entireQuestionList, Player player) {
         this.entireQuestionList = entireQuestionList;
