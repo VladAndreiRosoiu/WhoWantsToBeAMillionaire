@@ -2,7 +2,6 @@ package ro.jademy.millionaire.model;
 
 public class Player {
 
-    //private String fullName;
     private int gainedMoney=0;
     private boolean isPlayerWrong=false;
     private boolean hasFiftyFifty=true;
