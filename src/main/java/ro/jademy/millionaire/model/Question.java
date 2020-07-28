@@ -5,13 +5,13 @@ import java.util.List;
 public class Question {
 
     private final String text;
-    private final List<Answer> answerList;
+    private final List<Answer> wrongAnswerList;
     private final Answer correctAnswer;
     private final int difficultyLevel;
 
-    public Question(String text, List<Answer> answerList, Answer correctAnswer, int difficultyLevel) {
+    public Question(String text, List<Answer> wrongAnswerList, Answer correctAnswer, int difficultyLevel) {
         this.text = text;
-        this.answerList=answerList;
+        this.wrongAnswerList = wrongAnswerList;
         this.correctAnswer=correctAnswer;
         this.difficultyLevel=difficultyLevel;
 
@@ -21,8 +21,8 @@ public class Question {
         return text;
     }
 
-    public List<Answer> getAnswerList(){
-        return answerList;
+    public List<Answer> getWrongAnswerList(){
+        return wrongAnswerList;
     }
 
     public Answer getCorrectAnswer() {

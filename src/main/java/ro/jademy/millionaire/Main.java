@@ -14,13 +14,26 @@ public class Main {
 
     public static void main(String[] args) {
         List<Question> difficultyOneQuestions = getRandomQuestions (5,1);
-        List<Question> difficultyTwoQuestions = getRandomQuestions (5,1);
-        List<Question> difficultyThreeQuestions = getRandomQuestions (5,1);
-        List<Question> difficultyFourQuestions = getRandomQuestions (5,1);
+        List<Question> difficultyTwoQuestions = getRandomQuestions (5,2);
+        List<Question> difficultyThreeQuestions = getRandomQuestions (4,3);
+        List<Question> difficultyFourQuestions = getRandomQuestions (1,4);
 
         Game game=new Game(difficultyOneQuestions,difficultyTwoQuestions,difficultyThreeQuestions,difficultyFourQuestions);
 
-        game.playGame();
+        game.printWelcome();
+        game.printRules();
+
+        do{
+            String choice;
+            String answer;
+            game.showQuestion();
+            game.printAnsweringOptions();
+            choice=sc.next();
+            game.doAnsweringOptions(choice);
+            sc.skip("\n");
+            answer=sc.nextLine();
+            game.checkAnswer(answer);
+        }while (!game.player.isWrongGuess());
     }
 
     private static List <Question> getRandomQuestions(int nrOfQuestions, int difficultyLevel){
