@@ -65,15 +65,14 @@ public class Game {
             sc.skip("\n");
             answer = sc.nextLine();
             validateAnswer(answer);
-            if (currentLevel.getLevelNumber()==15){
-                gameWon();
-            }else{
-                currentLevel = LEVEL_LIST.get(++levelNumber);
-            }
+            currentLevel = LEVEL_LIST.get(++levelNumber);
             if (currentLevel.getLevelNumber()==6 || currentLevel.getLevelNumber()==11 || currentLevel.getLevelNumber()==15){
                 printQuitOption();
                 choice=sc.next();
                 doQuitOption(choice);
+            }
+            if (currentLevel.getLevelNumber()==16){
+                gameWon();
             }
         } while (!player.isWrongGuess());
     }

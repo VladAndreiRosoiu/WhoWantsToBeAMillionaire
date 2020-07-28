@@ -73,12 +73,6 @@ public class QuestionList {
                             new Answer("On his head"),
                             new Answer("On his arms")),
                     new Answer("On his legs"), 2),
-            new Question("In which sport do two teams pull at the opposite ends of a rope?",
-                    Arrays.asList(
-                            new Answer("Basketball"),
-                            new Answer("Ice hockey"),
-                            new Answer("Polo")),
-                    new Answer("Tug of war"), 2),
             new Question("In 1581, Sir Francis Drake became mayor of which city?",
                     Arrays.asList(
                             new Answer("Bristol"),
