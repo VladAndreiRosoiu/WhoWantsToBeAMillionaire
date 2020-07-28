@@ -7,11 +7,11 @@ public class Level {
     private int reward;
     private int rewardBreakout;
 
-    public Level(int levelNumber, int difficultyLevel, int reward,int rewardBreakout){
-        this.levelNumber=levelNumber;
-        this.difficultyLevel=difficultyLevel;
-        this.reward=reward;
-        this.rewardBreakout=rewardBreakout;
+    public Level(int levelNumber, int difficultyLevel, int reward, int rewardBreakout) {
+        this.levelNumber = levelNumber;
+        this.difficultyLevel = difficultyLevel;
+        this.reward = reward;
+        this.rewardBreakout = rewardBreakout;
     }
 
     public int getLevelNumber() {

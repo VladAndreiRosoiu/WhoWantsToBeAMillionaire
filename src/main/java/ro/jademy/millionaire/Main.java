@@ -20,9 +20,14 @@ public class Main {
             List<Question> difficultyTwoQuestions = getRandomQuestions(5, 2);
             List<Question> difficultyThreeQuestions = getRandomQuestions(4, 3);
             List<Question> difficultyFourQuestions = getRandomQuestions(1, 4);
-            Game game = new Game(difficultyOneQuestions, difficultyTwoQuestions, difficultyThreeQuestions, difficultyFourQuestions);
+
+            Game game = new Game(difficultyOneQuestions, difficultyTwoQuestions,
+                    difficultyThreeQuestions, difficultyFourQuestions);
+
             game.playGame();
+
         } while (playAgain());
+
     }
 
     private static List<Question> getRandomQuestions(int nrOfQuestions, int difficultyLevel) {

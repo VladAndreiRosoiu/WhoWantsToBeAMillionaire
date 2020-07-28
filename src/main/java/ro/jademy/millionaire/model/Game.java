@@ -66,12 +66,12 @@ public class Game {
             answer = sc.nextLine();
             validateAnswer(answer);
             currentLevel = LEVEL_LIST.get(++levelNumber);
-            if (currentLevel.getLevelNumber()==6 || currentLevel.getLevelNumber()==11 || currentLevel.getLevelNumber()==15){
+            if (currentLevel.getLevelNumber() == 6 || currentLevel.getLevelNumber() == 11 || currentLevel.getLevelNumber() == 15) {
                 printQuitOption();
-                choice=sc.next();
+                choice = sc.next();
                 doQuitOption(choice);
             }
-            if (currentLevel.getLevelNumber()==16){
+            if (currentLevel.getLevelNumber() == 16) {
                 gameWon();
             }
         } while (!player.isWrongGuess());
@@ -91,7 +91,7 @@ public class Game {
         System.out.println("There will be 15 questions, difficulty will be increased with each level!");
         System.out.println("You may quit the game and keep your money only after question 5, 10, or 14!");
         System.out.println("If you reached the upper mentioned checkpoints, you can keep the money earned at checkpoint!");
-        System.out.println("You will be able to use "+lifelines.size()+" 50-50 option, after that... you are on your own!");
+        System.out.println("You will be able to use " + lifelines.size() + " 50-50 option, after that... you are on your own!");
     }
 
     private void showQuestion() {
@@ -124,7 +124,7 @@ public class Game {
 
     private void printQuestion() {
         System.out.println();
-        System.out.println("Next question for "+currentLevel.getReward()+" $!");
+        System.out.println("Next question for " + currentLevel.getReward() + " $!");
         System.out.println(currentQuestion.getText());
     }
 
@@ -156,15 +156,15 @@ public class Game {
     }
 
     private void useLifeLine() {
-        Lifeline life=null;
+        Lifeline life = null;
         for (Lifeline lifeline : lifelines) {
-            life=lifeline;
+            life = lifeline;
             break;
         }
-        if (life!=null){
+        if (life != null && life.getName().equalsIgnoreCase("50%")) {
             doFiftyFifty();
-            System.out.println("You have now "+lifelines.size() + " lifelines remaining!");
-        }else {
+            System.out.println("You have now " + lifelines.size() + " lifelines remaining!");
+        } else {
             System.out.println("No more lifelines remaining!");
         }
     }
@@ -194,28 +194,28 @@ public class Game {
         }
     }
 
-    public void printQuitOption(){
-        System.out.println("You can quit now and keep your "+currentLevel.getRewardBreakout()+" $!");
+    public void printQuitOption() {
+        System.out.println("You can quit now and keep your " + currentLevel.getRewardBreakout() + " $!");
         System.out.println("Or...");
         System.out.println("You can keep trying to earn the 1.000.000 $!");
         System.out.println("Please enter \"Q\" to quit or \"C\" to continue! ");
     }
 
-    public void doQuitOption(String choice){
-        if (choice.equalsIgnoreCase("Q")){
+    public void doQuitOption(String choice) {
+        if (choice.equalsIgnoreCase("Q")) {
             gameOver();
-        }else {
+        } else {
             System.out.println("Great! Let's go on!");
         }
     }
 
     private void gameOver() {
         System.out.println("Game Over!!!");
-        System.out.println("You have won "+currentLevel.getRewardBreakout()+" $!");
+        System.out.println("You have won " + currentLevel.getRewardBreakout() + " $!");
         player.setWrongGuess(true);
     }
 
-    private void gameWon(){
+    private void gameWon() {
         System.out.println();
         System.out.println("***********************************");
         System.out.println("**      Congratulations !!!      **");

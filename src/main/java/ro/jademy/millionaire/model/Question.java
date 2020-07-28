@@ -12,8 +12,8 @@ public class Question {
     public Question(String text, List<Answer> wrongAnswerList, Answer correctAnswer, int difficultyLevel) {
         this.text = text;
         this.wrongAnswerList = wrongAnswerList;
-        this.correctAnswer=correctAnswer;
-        this.difficultyLevel=difficultyLevel;
+        this.correctAnswer = correctAnswer;
+        this.difficultyLevel = difficultyLevel;
 
     }
 
@@ -21,7 +21,7 @@ public class Question {
         return text;
     }
 
-    public List<Answer> getWrongAnswerList(){
+    public List<Answer> getWrongAnswerList() {
         return wrongAnswerList;
     }
 
@@ -29,7 +29,7 @@ public class Question {
         return correctAnswer;
     }
 
-    public int getDifficultyLevel(){
+    public int getDifficultyLevel() {
         return difficultyLevel;
     }
 
