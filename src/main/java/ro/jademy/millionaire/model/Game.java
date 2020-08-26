@@ -1,74 +1,67 @@
 package ro.jademy.millionaire.model;
 
+
 import java.util.*;
 
 public class Game {
 
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     private List<Answer> tempAllAnswersList = new ArrayList<>();
     private Question currentQuestion;
     private int levelNumber = 0;
 
     private static final List<Level> LEVEL_LIST = Arrays.asList(
-            new Level(1, 1, 100, 0),
-            new Level(2, 1, 200, 0),
-            new Level(3, 1, 500, 0),
-            new Level(4, 1, 700, 0),
-            new Level(5, 1, 1000, 0),
-            new Level(6, 2, 2000, 1000),
-            new Level(7, 2, 4000, 1000),
-            new Level(8, 2, 8000, 1000),
-            new Level(9, 2, 16000, 1000),
-            new Level(10, 2, 32000, 1000),
-            new Level(11, 3, 64000, 32000),
-            new Level(12, 3, 125000, 32000),
-            new Level(13, 3, 250000, 32000),
-            new Level(14, 3, 500000, 32000),
-            new Level(15, 4, 1000000, 500000),
-            new Level(16, 4, 1000000, 1000000)
+            new Level(1, DifficultyLevel.ONE, 100, 0),
+            new Level(2, DifficultyLevel.ONE, 200, 0),
+            new Level(3, DifficultyLevel.ONE, 500, 0),
+            new Level(4, DifficultyLevel.ONE, 700, 0),
+            new Level(5, DifficultyLevel.ONE, 1000, 0),
+            new Level(6, DifficultyLevel.TWO, 2000, 1000),
+            new Level(7, DifficultyLevel.TWO, 4000, 1000),
+            new Level(8, DifficultyLevel.TWO, 8000, 1000),
+            new Level(9, DifficultyLevel.TWO, 16000, 1000),
+            new Level(10, DifficultyLevel.TWO, 32000, 1000),
+            new Level(11, DifficultyLevel.THREE, 64000, 32000),
+            new Level(12, DifficultyLevel.THREE, 125000, 32000),
+            new Level(13, DifficultyLevel.THREE, 250000, 32000),
+            new Level(14, DifficultyLevel.THREE, 500000, 32000),
+            new Level(15, DifficultyLevel.FOUR, 1000000, 500000),
+            new Level(16, DifficultyLevel.FOUR, 1000000, 1000000)
     );
 
-    private List<Question> difficultyOneQuestions;
-    private List<Question> difficultyTwoQuestions;
-    private List<Question> difficultyThreeQuestions;
-    private List<Question> difficultyFourQuestions;
-
+    private Map<DifficultyLevel, List<Question>> questionMap;
     private Player player = new Player();
-    private final List<Lifeline> lifelines = new ArrayList<>();
+    private List<Lifeline> lifelines = new ArrayList<>();
     private Level currentLevel = LEVEL_LIST.get(levelNumber);
 
-    public Game(List<Question> difficultyOneQuestions, List<Question> difficultyTwoQuestions,
-                List<Question> difficultyThreeQuestionsQuestions, List<Question> difficultyFourQuestions) {
-        this.difficultyOneQuestions = difficultyOneQuestions;
-        this.difficultyTwoQuestions = difficultyTwoQuestions;
-        this.difficultyThreeQuestions = difficultyThreeQuestionsQuestions;
-        this.difficultyFourQuestions = difficultyFourQuestions;
 
+    public Game(Map<DifficultyLevel, List<Question>> questionMap) {
+        this.questionMap = questionMap;
         lifelines.add(new Lifeline("50%"));
         lifelines.add(new Lifeline("50%"));
         lifelines.add(new Lifeline("50%"));
     }
 
+
     public void playGame() {
 
         String choice;
         String answer;
-
         printWelcome();
         printRules();
 
         do {
             showQuestion();
             printAnsweringOptions();
-            choice = sc.next();
+            choice = scanner.next();
             doAnsweringOptions(choice);
-            sc.skip("\n");
-            answer = sc.nextLine();
+            scanner.skip("\n");
+            answer = scanner.nextLine();
             validateAnswer(answer);
             currentLevel = LEVEL_LIST.get(++levelNumber);
             if (currentLevel.getLevelNumber() == 6 || currentLevel.getLevelNumber() == 11 || currentLevel.getLevelNumber() == 15) {
                 printQuitOption();
-                choice = sc.next();
+                choice = scanner.next();
                 doQuitOption(choice);
             }
             if (currentLevel.getLevelNumber() == 16) {
@@ -95,31 +88,33 @@ public class Game {
     }
 
     private void showQuestion() {
+
         switch (currentLevel.getDifficultyLevel()) {
-            case 1:
-                currentQuestion = difficultyOneQuestions.get(0);
-                printQuestion();
-                difficultyOneQuestions.remove(0);
+            case ONE:
+                doCurrentQuestionAndAnswer(DifficultyLevel.ONE);
                 break;
-            case 2:
-                currentQuestion = difficultyTwoQuestions.get(0);
-                printQuestion();
-                difficultyTwoQuestions.remove(0);
+            case TWO:
+                doCurrentQuestionAndAnswer(DifficultyLevel.TWO);
                 break;
-            case 3:
-                currentQuestion = difficultyThreeQuestions.get(0);
-                printQuestion();
-                difficultyThreeQuestions.remove(0);
+            case THREE:
+                doCurrentQuestionAndAnswer(DifficultyLevel.THREE);
                 break;
-            case 4:
-                currentQuestion = difficultyFourQuestions.get(0);
-                printQuestion();
+            case FOUR:
+                doCurrentQuestionAndAnswer(DifficultyLevel.FOUR);
                 break;
             default:
                 System.out.println("Error!");
                 break;
         }
         tempAllAnswersList = printAnswers(currentQuestion);
+    }
+
+    private void doCurrentQuestionAndAnswer(DifficultyLevel difficultyLevel) {
+        List<Question> questions;
+        questions = questionMap.get(difficultyLevel);
+        currentQuestion = questions.get(0);
+        printQuestion();
+        questions.remove(0);
     }
 
     private void printQuestion() {
@@ -226,6 +221,4 @@ public class Game {
         player.setWrongGuess(true);
     }
 }
-
-
 

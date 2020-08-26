@@ -3,18 +3,14 @@ package ro.jademy.millionaire.model;
 import java.util.List;
 
 public class Question {
-
     private final String text;
     private final List<Answer> wrongAnswerList;
     private final Answer correctAnswer;
-    private final int difficultyLevel;
 
-    public Question(String text, List<Answer> wrongAnswerList, Answer correctAnswer, int difficultyLevel) {
+    public Question(String text, List<Answer> wrongAnswerList, Answer correctAnswer) {
         this.text = text;
         this.wrongAnswerList = wrongAnswerList;
         this.correctAnswer = correctAnswer;
-        this.difficultyLevel = difficultyLevel;
-
     }
 
     public String getText() {
@@ -27,10 +23,6 @@ public class Question {
 
     public Answer getCorrectAnswer() {
         return correctAnswer;
-    }
-
-    public int getDifficultyLevel() {
-        return difficultyLevel;
     }
 
 }
