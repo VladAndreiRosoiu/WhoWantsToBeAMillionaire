@@ -4,39 +4,37 @@ package ro.jademy.millionaire.model;
 import java.util.*;
 
 public class Game {
-
-    private final Scanner scanner = new Scanner(System.in);
-    private List<Answer> tempAllAnswersList = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+    private Player player;
+    private List<Question> questions;
     private Question currentQuestion;
     private int levelNumber = 0;
-
     private static final List<Level> LEVEL_LIST = Arrays.asList(
-            new Level(1, DifficultyLevel.ONE, 100, 0),
-            new Level(2, DifficultyLevel.ONE, 200, 0),
-            new Level(3, DifficultyLevel.ONE, 500, 0),
-            new Level(4, DifficultyLevel.ONE, 700, 0),
-            new Level(5, DifficultyLevel.ONE, 1000, 0),
-            new Level(6, DifficultyLevel.TWO, 2000, 1000),
-            new Level(7, DifficultyLevel.TWO, 4000, 1000),
-            new Level(8, DifficultyLevel.TWO, 8000, 1000),
-            new Level(9, DifficultyLevel.TWO, 16000, 1000),
-            new Level(10, DifficultyLevel.TWO, 32000, 1000),
-            new Level(11, DifficultyLevel.THREE, 64000, 32000),
-            new Level(12, DifficultyLevel.THREE, 125000, 32000),
-            new Level(13, DifficultyLevel.THREE, 250000, 32000),
-            new Level(14, DifficultyLevel.THREE, 500000, 32000),
-            new Level(15, DifficultyLevel.FOUR, 1000000, 500000),
-            new Level(16, DifficultyLevel.FOUR, 1000000, 1000000)
+            new Level(1, 100, 0),
+            new Level(2, 200, 0),
+            new Level(3, 500, 0),
+            new Level(4, 700, 0),
+            new Level(5, 1000, 0),
+            new Level(6, 2000, 1000),
+            new Level(7, 4000, 1000),
+            new Level(8, 8000, 1000),
+            new Level(9, 16000, 1000),
+            new Level(10,32000, 1000),
+            new Level(11, 64000, 32000),
+            new Level(12, 125000, 32000),
+            new Level(13, 250000, 32000),
+            new Level(14, 500000, 32000),
+            new Level(15,1000000, 500000),
+            new Level(16,1000000, 1000000)
     );
-
-    private Map<DifficultyLevel, List<Question>> questionMap;
-    private Player player = new Player();
     private List<Lifeline> lifelines = new ArrayList<>();
     private Level currentLevel = LEVEL_LIST.get(levelNumber);
 
 
-    public Game(Map<DifficultyLevel, List<Question>> questionMap) {
-        this.questionMap = questionMap;
+
+    public Game(Player player, List<Question> questions) {
+        this.player=player;
+        this.questions = questions;
         lifelines.add(new Lifeline("50%"));
         lifelines.add(new Lifeline("50%"));
         lifelines.add(new Lifeline("50%"));
@@ -45,29 +43,6 @@ public class Game {
 
     public void playGame() {
 
-        String choice;
-        String answer;
-        printWelcome();
-        printRules();
-
-        do {
-            showQuestion();
-            printAnsweringOptions();
-            choice = scanner.next();
-            doAnsweringOptions(choice);
-            scanner.skip("\n");
-            answer = scanner.nextLine();
-            validateAnswer(answer);
-            currentLevel = LEVEL_LIST.get(++levelNumber);
-            if (currentLevel.getLevelNumber() == 6 || currentLevel.getLevelNumber() == 11 || currentLevel.getLevelNumber() == 15) {
-                printQuitOption();
-                choice = scanner.next();
-                doQuitOption(choice);
-            }
-            if (currentLevel.getLevelNumber() == 16) {
-                gameWon();
-            }
-        } while (!player.isWrongGuess());
     }
 
     private void printWelcome() {
@@ -87,50 +62,11 @@ public class Game {
         System.out.println("You will be able to use " + lifelines.size() + " 50-50 option, after that... you are on your own!");
     }
 
-    private void showQuestion() {
-
-        switch (currentLevel.getDifficultyLevel()) {
-            case ONE:
-                doCurrentQuestionAndAnswer(DifficultyLevel.ONE);
-                break;
-            case TWO:
-                doCurrentQuestionAndAnswer(DifficultyLevel.TWO);
-                break;
-            case THREE:
-                doCurrentQuestionAndAnswer(DifficultyLevel.THREE);
-                break;
-            case FOUR:
-                doCurrentQuestionAndAnswer(DifficultyLevel.FOUR);
-                break;
-            default:
-                System.out.println("Error!");
-                break;
-        }
-        tempAllAnswersList = printAnswers(currentQuestion);
-    }
-
-    private void doCurrentQuestionAndAnswer(DifficultyLevel difficultyLevel) {
-        List<Question> questions;
-        questions = questionMap.get(difficultyLevel);
-        currentQuestion = questions.get(0);
-        printQuestion();
-        questions.remove(0);
-    }
 
     private void printQuestion() {
         System.out.println();
         System.out.println("Next question for " + currentLevel.getReward() + " $!");
         System.out.println(currentQuestion.getText());
-    }
-
-    private List<Answer> printAnswers(Question question) {
-        List<Answer> allAnswers = new ArrayList<>(question.getWrongAnswerList());
-        allAnswers.add(question.getCorrectAnswer());
-        Collections.shuffle(allAnswers);
-        for (int i = 0; i < allAnswers.size(); i++) {
-            System.out.println(((char) (65 + i)) + "-" + allAnswers.get(i).getText());
-        }
-        return allAnswers;
     }
 
     private void printAnsweringOptions() {
@@ -166,14 +102,14 @@ public class Game {
 
     public void doFiftyFifty() {
         Random rdm = new Random();
-        List<Answer> copyTempAllAnswerList = new ArrayList<>(tempAllAnswersList);
+        List<Answer> copyTempAllAnswerList = new ArrayList<>(currentQuestion.getAllAnswers());
         copyTempAllAnswerList.remove(currentQuestion.getCorrectAnswer());
         copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
         copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
-        for (int i = 0; i < tempAllAnswersList.size(); i++) {
-            Answer answer = tempAllAnswersList.get(i);
+        for (int i = 0; i < copyTempAllAnswerList.size(); i++) {
+            Answer answer = copyTempAllAnswerList.get(i);
             if (answer.equals(currentQuestion.getCorrectAnswer()) || copyTempAllAnswerList.contains(answer)) {
-                System.out.println(((char) (65 + i)) + "-" + tempAllAnswersList.get(i).getText());
+                System.out.println(((char) (65 + i)) + "-" + copyTempAllAnswerList.get(i).getText());
             } else {
                 System.out.println(((char) (65 + i)) + ". ");
             }

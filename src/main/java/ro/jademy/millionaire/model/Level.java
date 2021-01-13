@@ -2,24 +2,18 @@ package ro.jademy.millionaire.model;
 
 public class Level {
 
-    private int levelNumber;
-    private DifficultyLevel difficultyLevel;
-    private int reward;
-    private int rewardBreakout;
+    private final int levelNumber;
+    private final int reward;
+    private final int rewardBreakout;
 
-    public Level(int levelNumber, DifficultyLevel difficultyLevel, int reward, int rewardBreakout) {
+    public Level(int levelNumber, int reward, int rewardBreakout) {
         this.levelNumber = levelNumber;
-        this.difficultyLevel = difficultyLevel;
         this.reward = reward;
         this.rewardBreakout = rewardBreakout;
     }
 
     public int getLevelNumber() {
         return levelNumber;
-    }
-
-    public DifficultyLevel getDifficultyLevel() {
-        return difficultyLevel;
     }
 
     public int getReward() {
