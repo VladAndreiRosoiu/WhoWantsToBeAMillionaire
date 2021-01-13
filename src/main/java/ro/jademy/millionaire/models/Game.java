@@ -10,30 +10,29 @@ public class Game {
     private Question currentQuestion;
     private int levelNumber = 0;
     private static final List<Level> LEVEL_LIST = Arrays.asList(
-            new Level(1, 100, 0),
-            new Level(2, 200, 0),
-            new Level(3, 500, 0),
-            new Level(4, 700, 0),
-            new Level(5, 1000, 0),
+            new Level(1, 100, 100),
+            new Level(2, 200, 100),
+            new Level(3, 500, 100),
+            new Level(4, 700, 500),
+            new Level(5, 1000, 500),
             new Level(6, 2000, 1000),
             new Level(7, 4000, 1000),
-            new Level(8, 8000, 1000),
-            new Level(9, 16000, 1000),
-            new Level(10,32000, 1000),
+            new Level(8, 8000, 5000),
+            new Level(9, 16000, 5000),
+            new Level(10, 32000, 5000),
             new Level(11, 64000, 32000),
             new Level(12, 125000, 32000),
-            new Level(13, 250000, 32000),
-            new Level(14, 500000, 32000),
-            new Level(15,1000000, 500000),
-            new Level(16,1000000, 1000000)
+            new Level(13, 250000, 100000),
+            new Level(14, 500000, 100000),
+            new Level(15, 1000000, 500000),
+            new Level(16, 1000000, 1000000)
     );
     private final List<Lifeline> lifelines = new ArrayList<>();
     private Level currentLevel;
 
 
-
     public Game(Player player, List<Question> questions) {
-        this.player=player;
+        this.player = player;
         this.questions = questions;
         lifelines.add(new Lifeline("50%"));
         lifelines.add(new Lifeline("50%"));
@@ -42,26 +41,41 @@ public class Game {
 
 
     public void playGame() {
-        for (Question question: questions){
+        for (Question question : questions) {
             System.out.println(question.getCorrectAnswer().getText());
         }
-        printRules();
 
-        do {
-            currentLevel=LEVEL_LIST.get(levelNumber);
-            currentQuestion=questions.get(levelNumber);
-            printQuestion();
-            printAnsweringOptions();
-            int choice = scanner.nextInt();
-            doAnsweringOptions(choice);
-            scanner.skip("\n");
-            String answer = scanner.nextLine();
-            validateAnswer(answer);
-            printQuitOption();
-            String quitOption = scanner.next();
-            doQuitOption(quitOption);
-            levelNumber++;
-        }while (!player.isWrongGuess() || levelNumber < 16);
+        printRules();
+        int choice;
+        String answer;
+        try{
+            do {
+                currentLevel = LEVEL_LIST.get(levelNumber);
+                currentQuestion = questions.get(levelNumber);
+                printQuestion();
+                printAnsweringOptions();
+                choice=scanner.nextInt();
+                doAnsweringOptions(choice);
+                scanner.skip("\n");
+                answer = scanner.nextLine();
+                validateAnswer(answer);
+                if (levelNumber == 5 || levelNumber == 10 || levelNumber == 14) {
+                    printQuitOption();
+                    String quitOption = scanner.next();
+                    doQuitOption(quitOption);
+                }
+                levelNumber++;
+                if (levelNumber == 15 && !player.isWrongGuess()) {
+                    gameWon();
+                }
+            } while (!player.isWrongGuess() || levelNumber < 16);
+        }catch (InputMismatchException e){
+            System.out.println("Incorrect input!");
+            scanner=new Scanner(System.in);
+        }
+
+
+
     }
 
     private void printRules() {
@@ -69,12 +83,12 @@ public class Game {
         System.out.println("There will be 15 questions, difficulty will be increased with each level!");
         System.out.println("You may quit the game and keep your money only after question 5, 10, or 14!");
         System.out.println("If you reached the upper mentioned checkpoints, you can keep the money earned at checkpoint!");
-        System.out.println("You will be able to use " + (lifelines.size()+1) + " 50-50 option, after that... you are on your own!");
+        System.out.println("You will be able to use " + lifelines.stream().count() + " 50-50 option, after that... you are on your own!");
     }
 
     private void printQuestion() {
         System.out.println();
-        System.out.println("Next question for " + currentLevel.getReward() + " $!");
+        System.out.println("Question number " + currentLevel.getLevelNumber() + " for " + currentLevel.getReward() + " $!");
         System.out.println(currentQuestion.getCategoryText());
         System.out.println(currentQuestion.getQuestionText());
         for (int i = 0; i < currentQuestion.getAllAnswers().size(); i++) {
@@ -89,10 +103,10 @@ public class Game {
     }
 
     private void doAnsweringOptions(int choice) {
-        if (choice==1) {
+        if (choice == 1) {
             useLifeLine();
             System.out.println("Please enter answer:");
-        } else if (choice==2) {
+        } else if (choice == 2) {
             System.out.println("Please enter answer:");
         } else {
             System.out.println("Unknown choice!");
@@ -107,7 +121,7 @@ public class Game {
         }
         if (life != null && life.getName().equalsIgnoreCase("50%")) {
             doFiftyFifty();
-            System.out.println("You have now " + (lifelines.size()+1) + " lifelines remaining!");
+            System.out.println("You have now " + lifelines.stream().count() + " lifelines remaining!");
         } else {
             System.out.println("No more lifelines remaining!");
         }
@@ -124,7 +138,7 @@ public class Game {
             if (answer.equals(currentQuestion.getCorrectAnswer()) || copyTempAllAnswerList.contains(answer)) {
                 System.out.println(((char) (65 + i)) + "-" + currentQuestion.getAllAnswers().get(i).getText());
             } else {
-                System.out.println(((char) (65 + i)) + ". ");
+                System.out.println(((char) (65 + i)) + "-");
             }
         }
         lifelines.remove(0);
