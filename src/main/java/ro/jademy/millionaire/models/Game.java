@@ -43,12 +43,21 @@ public class Game {
 
     public void playGame() {
         for (Question question: questions){
-            System.out.println(question.getCategoryText());
-            System.out.println(question.getQuestionText());
-            for (Answer answer: question.getAllAnswers()){
-                System.out.println(answer.getText());
-            }
+            System.out.println(question.getCorrectAnswer().getText());
         }
+        do {
+            currentQuestion=questions.get(levelNumber);
+            printQuestion();
+            printAnsweringOptions();
+            int choice = scanner.nextInt();
+            doAnsweringOptions(choice);
+            String answer = scanner.next();
+            validateAnswer(answer);
+            printQuitOption();
+            String quitOption = scanner.next();
+            doQuitOption(quitOption);
+            levelNumber++;
+        }while (!player.isWrongGuess() || levelNumber < 16);
     }
 
     private void printWelcome() {
@@ -72,7 +81,11 @@ public class Game {
     private void printQuestion() {
         System.out.println();
         System.out.println("Next question for " + currentLevel.getReward() + " $!");
+        System.out.println(currentQuestion.getCategoryText());
         System.out.println(currentQuestion.getQuestionText());
+        for (int i = 0; i < currentQuestion.getAllAnswers().size(); i++) {
+            System.out.println(((char) (65 + i)) + "-" + currentQuestion.getAllAnswers().get(i).getText());
+        }
     }
 
     private void printAnsweringOptions() {
@@ -81,11 +94,11 @@ public class Game {
         System.out.println("Press 2 to answer directly!");
     }
 
-    private void doAnsweringOptions(String choice) {
-        if (choice.equalsIgnoreCase("1")) {
+    private void doAnsweringOptions(int choice) {
+        if (choice==1) {
             useLifeLine();
             System.out.println("Please enter answer:");
-        } else if (choice.equalsIgnoreCase("2")) {
+        } else if (choice==2) {
             System.out.println("Please enter answer:");
         } else {
             System.out.println("Unknown choice!");
