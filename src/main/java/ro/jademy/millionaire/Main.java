@@ -13,6 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, ParseException {
         QuestionsProviderService qProvider = new QuestionsProviderService();
+        printWelcome();
         do {
             System.out.println("Please enter your name : ");
             String name = scanner.next();
@@ -24,6 +25,15 @@ public class Main {
             Game game = new Game(new Player(name), qProvider.getQuestions(difficulty));
             game.playGame();
         }while (playAgain());
+    }
+
+    private static void printWelcome() {
+        System.out.println();
+        System.out.println("||================================||");
+        System.out.println("||Welcome to who wants to be a... ||");
+        System.out.println("||         MILLIONAIRE!!!         ||");
+        System.out.println("||================================||");
+        System.out.println();
     }
 
     private static boolean playAgain() {

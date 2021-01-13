@@ -45,6 +45,8 @@ public class Game {
         for (Question question: questions){
             System.out.println(question.getCorrectAnswer().getText());
         }
+        printRules();
+
         do {
             currentQuestion=questions.get(levelNumber);
             printQuestion();
@@ -60,15 +62,6 @@ public class Game {
         }while (!player.isWrongGuess() || levelNumber < 16);
     }
 
-    private void printWelcome() {
-        System.out.println();
-        System.out.println("||================================||");
-        System.out.println("||Welcome to who wants to be a... ||");
-        System.out.println("||         MILLIONAIRE!!!         ||");
-        System.out.println("||================================||");
-        System.out.println();
-    }
-
     private void printRules() {
         System.out.println("First rule : answer correctly to given questions!");
         System.out.println("There will be 15 questions, difficulty will be increased with each level!");
@@ -76,7 +69,6 @@ public class Game {
         System.out.println("If you reached the upper mentioned checkpoints, you can keep the money earned at checkpoint!");
         System.out.println("You will be able to use " + lifelines.size() + " 50-50 option, after that... you are on your own!");
     }
-
 
     private void printQuestion() {
         System.out.println();
@@ -121,18 +113,18 @@ public class Game {
 
     public void doFiftyFifty() {
         Random rdm = new Random();
-        List<Answer> copyTempAllAnswerList = new ArrayList<>(currentQuestion.getAllAnswers());
-        copyTempAllAnswerList.remove(currentQuestion.getCorrectAnswer());
-        copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
-        copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
-        for (int i = 0; i < copyTempAllAnswerList.size(); i++) {
-            Answer answer = copyTempAllAnswerList.get(i);
-            if (answer.equals(currentQuestion.getCorrectAnswer()) || copyTempAllAnswerList.contains(answer)) {
-                System.out.println(((char) (65 + i)) + "-" + copyTempAllAnswerList.get(i).getText());
-            } else {
-                System.out.println(((char) (65 + i)) + ". ");
-            }
-        }
+//        List<Answer> copyTempAllAnswerList = new ArrayList<>(tempAllAnswersList);
+//        copyTempAllAnswerList.remove(currentQuestion.getCorrectAnswer());
+//        copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
+//        copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
+//        for (int i = 0; i < tempAllAnswersList.size(); i++) {
+//            Answer answer = tempAllAnswersList.get(i);
+//            if (answer.equals(currentQuestion.getCorrectAnswer()) || copyTempAllAnswerList.contains(answer)) {
+//                System.out.println(((char) (65 + i)) + "-" + tempAllAnswersList.get(i).getText());
+//            } else {
+//                System.out.println(((char) (65 + i)) + ". ");
+//            }
+//        }
         lifelines.remove(0);
     }
 
