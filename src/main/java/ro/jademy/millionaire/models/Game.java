@@ -5,8 +5,8 @@ import java.util.*;
 
 public class Game {
     private Scanner scanner = new Scanner(System.in);
-    private Player player;
-    private List<Question> questions;
+    private final Player player;
+    private final List<Question> questions;
     private Question currentQuestion;
     private int levelNumber = 0;
     private static final List<Level> LEVEL_LIST = Arrays.asList(
@@ -27,7 +27,7 @@ public class Game {
             new Level(15,1000000, 500000),
             new Level(16,1000000, 1000000)
     );
-    private List<Lifeline> lifelines = new ArrayList<>();
+    private final List<Lifeline> lifelines = new ArrayList<>();
     private Level currentLevel;
 
 
@@ -69,7 +69,7 @@ public class Game {
         System.out.println("There will be 15 questions, difficulty will be increased with each level!");
         System.out.println("You may quit the game and keep your money only after question 5, 10, or 14!");
         System.out.println("If you reached the upper mentioned checkpoints, you can keep the money earned at checkpoint!");
-        System.out.println("You will be able to use " + lifelines.size() + " 50-50 option, after that... you are on your own!");
+        System.out.println("You will be able to use " + (lifelines.size()+1) + " 50-50 option, after that... you are on your own!");
     }
 
     private void printQuestion() {
@@ -107,7 +107,7 @@ public class Game {
         }
         if (life != null && life.getName().equalsIgnoreCase("50%")) {
             doFiftyFifty();
-            System.out.println("You have now " + lifelines.size() + " lifelines remaining!");
+            System.out.println("You have now " + (lifelines.size()+1) + " lifelines remaining!");
         } else {
             System.out.println("No more lifelines remaining!");
         }
