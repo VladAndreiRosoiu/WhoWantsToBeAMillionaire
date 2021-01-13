@@ -28,7 +28,7 @@ public class Game {
             new Level(16,1000000, 1000000)
     );
     private List<Lifeline> lifelines = new ArrayList<>();
-    private Level currentLevel = LEVEL_LIST.get(levelNumber);
+    private Level currentLevel;
 
 
 
@@ -48,12 +48,14 @@ public class Game {
         printRules();
 
         do {
+            currentLevel=LEVEL_LIST.get(levelNumber);
             currentQuestion=questions.get(levelNumber);
             printQuestion();
             printAnsweringOptions();
             int choice = scanner.nextInt();
             doAnsweringOptions(choice);
-            String answer = scanner.next();
+            scanner.skip("\n");
+            String answer = scanner.nextLine();
             validateAnswer(answer);
             printQuitOption();
             String quitOption = scanner.next();
@@ -113,18 +115,18 @@ public class Game {
 
     public void doFiftyFifty() {
         Random rdm = new Random();
-//        List<Answer> copyTempAllAnswerList = new ArrayList<>(tempAllAnswersList);
-//        copyTempAllAnswerList.remove(currentQuestion.getCorrectAnswer());
-//        copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
-//        copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
-//        for (int i = 0; i < tempAllAnswersList.size(); i++) {
-//            Answer answer = tempAllAnswersList.get(i);
-//            if (answer.equals(currentQuestion.getCorrectAnswer()) || copyTempAllAnswerList.contains(answer)) {
-//                System.out.println(((char) (65 + i)) + "-" + tempAllAnswersList.get(i).getText());
-//            } else {
-//                System.out.println(((char) (65 + i)) + ". ");
-//            }
-//        }
+        List<Answer> copyTempAllAnswerList = new ArrayList<>(currentQuestion.getAllAnswers());
+        copyTempAllAnswerList.remove(currentQuestion.getCorrectAnswer());
+        copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
+        copyTempAllAnswerList.remove(rdm.nextInt(copyTempAllAnswerList.size()));
+        for (int i = 0; i < currentQuestion.getAllAnswers().size(); i++) {
+            Answer answer = currentQuestion.getAllAnswers().get(i);
+            if (answer.equals(currentQuestion.getCorrectAnswer()) || copyTempAllAnswerList.contains(answer)) {
+                System.out.println(((char) (65 + i)) + "-" + currentQuestion.getAllAnswers().get(i).getText());
+            } else {
+                System.out.println(((char) (65 + i)) + ". ");
+            }
+        }
         lifelines.remove(0);
     }
 
