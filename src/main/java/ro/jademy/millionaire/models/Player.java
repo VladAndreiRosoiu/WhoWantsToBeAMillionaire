@@ -1,4 +1,4 @@
-package ro.jademy.millionaire.model;
+package ro.jademy.millionaire.models;
 
 public class Player {
     private String name;

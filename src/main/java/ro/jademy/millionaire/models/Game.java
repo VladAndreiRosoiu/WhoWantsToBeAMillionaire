@@ -1,4 +1,4 @@
-package ro.jademy.millionaire.model;
+package ro.jademy.millionaire.models;
 
 
 import java.util.*;
@@ -42,7 +42,13 @@ public class Game {
 
 
     public void playGame() {
-
+        for (Question question: questions){
+            System.out.println(question.getCategoryText());
+            System.out.println(question.getQuestionText());
+            for (Answer answer: question.getAllAnswers()){
+                System.out.println(answer.getText());
+            }
+        }
     }
 
     private void printWelcome() {
@@ -66,7 +72,7 @@ public class Game {
     private void printQuestion() {
         System.out.println();
         System.out.println("Next question for " + currentLevel.getReward() + " $!");
-        System.out.println(currentQuestion.getText());
+        System.out.println(currentQuestion.getQuestionText());
     }
 
     private void printAnsweringOptions() {
