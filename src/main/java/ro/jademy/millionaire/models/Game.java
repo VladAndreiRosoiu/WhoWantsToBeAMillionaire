@@ -45,7 +45,6 @@ public class Game {
             System.out.println(question.getCorrectAnswer().getText());
         }
 
-        printRules();
         int choice;
         String answer;
         try{
@@ -76,14 +75,6 @@ public class Game {
 
 
 
-    }
-
-    private void printRules() {
-        System.out.println("First rule : answer correctly to given questions!");
-        System.out.println("There will be 15 questions, difficulty will be increased with each level!");
-        System.out.println("You may quit the game and keep your money only after question 5, 10, or 14!");
-        System.out.println("If you reached the upper mentioned checkpoints, you can keep the money earned at checkpoint!");
-        System.out.println("You will be able to use " + lifelines.stream().count() + " 50-50 option, after that... you are on your own!");
     }
 
     private void printQuestion() {

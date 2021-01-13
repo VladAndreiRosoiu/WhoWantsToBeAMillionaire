@@ -3,36 +3,32 @@ package ro.jademy.millionaire;
 import org.json.simple.parser.ParseException;
 import ro.jademy.millionaire.models.Game;
 import ro.jademy.millionaire.models.Player;
+import ro.jademy.millionaire.models.Question;
 import ro.jademy.millionaire.services.QuestionsProviderService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
+    private static boolean playGame;
 
     public static void main(String[] args) throws ParseException {
 
-        QuestionsProviderService qProvider = new QuestionsProviderService();
         printWelcome();
 
-        boolean playGame;
         System.out.println("Please enter your name : ");
         String name = scanner.next();
         do {
-            try{
-                Game game = new Game(new Player(name), qProvider.getQuestions(chooseDifficulty()));
-                game.playGame();
-                playGame=playAgain();
-            }catch (IOException ioException){
-                System.out.println("Please choose only one of the given number..let's try again!");
-                playGame=true;
-            }catch (ParseException parseException){
-                System.out.println("Something went wrong..let's try again!");
-                playGame=true;
-            }
+            printRules();
+//            Game game = new Game(new Player(name), questions);
+//            game.playGame();
+            playGame=playAgain();
         } while (playGame);
     }
 
@@ -71,5 +67,29 @@ public class Main {
             System.out.println("Unknown choice!");
         }
         return false;
+    }
+
+    private static void printRules() {
+        System.out.println("First rule : answer correctly to given questions!");
+        System.out.println("There will be 15 questions, difficulty will be increased with each level!");
+        System.out.println("You may quit the game and keep your money only after question 5, 10, or 14!");
+        System.out.println("If you reached the upper mentioned checkpoints, you can keep the money earned at checkpoint!");
+        System.out.println("You will be able to use 3 lifelines with 50-50 option, after that... you are on your own!");
+    }
+
+    private static synchronized List<Question> questions(int difficulty){
+        //TODO
+        QuestionsProviderService qProvider = new QuestionsProviderService();
+        Runnable runnable = () -> {
+            List<Question> questionList = new ArrayList<>();
+            try {
+                questionList= qProvider.getQuestions(difficulty);
+            } catch (IOException ioException) {
+                System.out.println("Please choose only one of the given number..let's try again!");
+            } catch (ParseException parseException) {
+                System.out.println("Something went wrong..let's try again!");
+            }
+        };
+        return null;
     }
 }
