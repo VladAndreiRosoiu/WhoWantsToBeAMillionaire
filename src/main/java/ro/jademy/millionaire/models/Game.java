@@ -10,21 +10,21 @@ public class Game {
     private Question currentQuestion;
     private int levelNumber = 0;
     private static final List<Level> LEVEL_LIST = Arrays.asList(
-            new Level(1, 100, 100),
-            new Level(2, 200, 100),
-            new Level(3, 500, 100),
-            new Level(4, 700, 500),
-            new Level(5, 1000, 500),
-            new Level(6, 2000, 1000),
-            new Level(7, 4000, 1000),
-            new Level(8, 8000, 5000),
-            new Level(9, 16000, 5000),
-            new Level(10, 32000, 5000),
-            new Level(11, 64000, 32000),
-            new Level(12, 125000, 32000),
-            new Level(13, 250000, 100000),
-            new Level(14, 500000, 100000),
-            new Level(15, 1000000, 500000),
+            new Level(1, 100, 0),
+            new Level(2, 200, 0),
+            new Level(3, 500, 0),
+            new Level(4, 700, 0),
+            new Level(5, 1000, 1000),
+            new Level(6, 2000, 0),
+            new Level(7, 4000, 0),
+            new Level(8, 8000, 0),
+            new Level(9, 16000, 0),
+            new Level(10, 32000, 32000),
+            new Level(11, 64000, 0),
+            new Level(12, 125000, 0),
+            new Level(13, 250000, 0),
+            new Level(14, 500000, 500000),
+            new Level(15, 1000000, 1000000),
             new Level(16, 1000000, 1000000)
     );
     private final List<Lifeline> lifelines = new ArrayList<>();
@@ -45,20 +45,16 @@ public class Game {
             System.out.println(question.getCorrectAnswer().getText());
         }
 
-        int choice;
-        String answer;
-        try{
             do {
                 currentLevel = LEVEL_LIST.get(levelNumber);
                 currentQuestion = questions.get(levelNumber);
                 printQuestion();
                 printAnsweringOptions();
-                choice=scanner.nextInt();
-                doAnsweringOptions(choice);
+                doAnsweringOptions();
                 scanner.skip("\n");
-                answer = scanner.nextLine();
+                String answer = scanner.nextLine();
                 validateAnswer(answer);
-                if (levelNumber == 5 || levelNumber == 10 || levelNumber == 14) {
+                if (levelNumber == 4 || levelNumber == 9 || levelNumber == 13) {
                     printQuitOption();
                     String quitOption = scanner.next();
                     doQuitOption(quitOption);
@@ -67,11 +63,8 @@ public class Game {
                 if (levelNumber == 15 && !player.isWrongGuess()) {
                     gameWon();
                 }
-            } while (!player.isWrongGuess() || levelNumber < 16);
-        }catch (InputMismatchException e){
-            System.out.println("Incorrect input!");
-            scanner=new Scanner(System.in);
-        }
+            } while (!player.isWrongGuess());
+
 
 
 
@@ -93,14 +86,24 @@ public class Game {
         System.out.println("Press 2 to answer directly!");
     }
 
-    private void doAnsweringOptions(int choice) {
-        if (choice == 1) {
-            useLifeLine();
-            System.out.println("Please enter answer:");
-        } else if (choice == 2) {
-            System.out.println("Please enter answer:");
-        } else {
-            System.out.println("Unknown choice!");
+    private void doAnsweringOptions() {
+        try{
+            int choice = scanner.nextInt();
+            if (choice == 1) {
+                useLifeLine();
+                System.out.println("Please enter answer:");
+            } else if (choice == 2) {
+                System.out.println("Please enter answer:");
+            } else {
+                System.out.println("Unknown choice!");
+                printAnsweringOptions();
+                doAnsweringOptions();
+            }
+        }catch (InputMismatchException inputMismatchException){
+            System.out.println("Wrong input!");
+            printAnsweringOptions();
+            scanner = new Scanner(System.in);
+            doAnsweringOptions();
         }
     }
 

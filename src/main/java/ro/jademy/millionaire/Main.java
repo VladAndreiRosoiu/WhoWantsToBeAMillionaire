@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class Main {
 
@@ -21,13 +21,21 @@ public class Main {
     public static void main(String[] args) throws ParseException {
 
         printWelcome();
-
+        QuestionsProviderService qProvider = new QuestionsProviderService();
         System.out.println("Please enter your name : ");
         String name = scanner.next();
         do {
             printRules();
-//            Game game = new Game(new Player(name), questions);
-//            game.playGame();
+            List<Question> questionList = new ArrayList<>();
+            try {
+                questionList= qProvider.getQuestions(chooseDifficulty());
+            } catch (IOException ioException) {
+                System.out.println("Please choose only one of the given number..let's try again!");
+            } catch (ParseException parseException) {
+                System.out.println("Something went wrong..let's try again!");
+            }
+            Game game = new Game(new Player(name), questionList);
+            game.playGame();
             playGame=playAgain();
         } while (playGame);
     }
@@ -71,25 +79,25 @@ public class Main {
 
     private static void printRules() {
         System.out.println("First rule : answer correctly to given questions!");
-        System.out.println("There will be 15 questions, difficulty will be increased with each level!");
+        System.out.println("There will be 15 questions of chosen difficulty!");
         System.out.println("You may quit the game and keep your money only after question 5, 10, or 14!");
         System.out.println("If you reached the upper mentioned checkpoints, you can keep the money earned at checkpoint!");
         System.out.println("You will be able to use 3 lifelines with 50-50 option, after that... you are on your own!");
     }
 
-    private static synchronized List<Question> questions(int difficulty){
-        //TODO
-        QuestionsProviderService qProvider = new QuestionsProviderService();
-        Runnable runnable = () -> {
-            List<Question> questionList = new ArrayList<>();
-            try {
-                questionList= qProvider.getQuestions(difficulty);
-            } catch (IOException ioException) {
-                System.out.println("Please choose only one of the given number..let's try again!");
-            } catch (ParseException parseException) {
-                System.out.println("Something went wrong..let's try again!");
-            }
-        };
-        return null;
-    }
+//    private static synchronized List<Question> questions(int difficulty){
+//        //TODO
+//        QuestionsProviderService qProvider = new QuestionsProviderService();
+//        Runnable runnable = () -> {
+//            List<Question> questionList = new ArrayList<>();
+//            try {
+//                questionList= qProvider.getQuestions(difficulty);
+//            } catch (IOException ioException) {
+//                System.out.println("Please choose only one of the given number..let's try again!");
+//            } catch (ParseException parseException) {
+//                System.out.println("Something went wrong..let's try again!");
+//            }
+//        };
+//        return null;
+//    }
 }
