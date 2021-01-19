@@ -3,7 +3,9 @@
 ## Simple command line game created after the popular TV show "Who Wants To Be a Millionaire".
 
 ## There are two versions of this game :
+
 1.A version that uses an api which is consumed in order to get the questions
+
 2.A version that uses file reading and gets questions from csv files.
 
 ## 1 API Verions :
