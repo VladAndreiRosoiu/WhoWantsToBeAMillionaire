@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class QuestionsProviderService {
-    private String apiResponse(int difficulty) throws IOException {
+    public String apiResponse(int difficulty) throws IOException {
         String stringURL = "";
         switch (difficulty) {
             case 1:
@@ -46,11 +46,12 @@ public class QuestionsProviderService {
         }
     }
 
-    public List<Question> getQuestions(int difficulty) throws IOException, ParseException {
+    public List<Question> getQuestions(/*int difficulty*/ String apiResponse) throws IOException, ParseException {
         List<Question> questions = new ArrayList<>();
         List<Answer> wrongAnswerList = new ArrayList<>();
         JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(apiResponse(difficulty));
+//        JSONObject jsonObject = (JSONObject) jsonParser.parse(apiResponse(difficulty));
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(apiResponse);
         JSONArray jsonArray = (JSONArray) jsonObject.get("results");
         for (Object object : jsonArray) {
             JSONObject questionObject = (JSONObject) object;

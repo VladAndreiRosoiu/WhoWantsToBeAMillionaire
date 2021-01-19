@@ -7,10 +7,9 @@ import ro.jademy.millionaire.models.Question;
 import ro.jademy.millionaire.services.QuestionsProviderService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.concurrent.*;
 
 
 public class Main {
@@ -18,25 +17,54 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static boolean playGame;
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException, ExecutionException, InterruptedException {
 
-        printWelcome();
+
         QuestionsProviderService qProvider = new QuestionsProviderService();
+
+
+//        long startT1 = System.currentTimeMillis();
+//        System.out.println("Starting api call: " + startT1);
+//        ExecutorService executorService = Executors.newSingleThreadExecutor();
+//        Callable<String> getApiResponse = () -> qProvider.apiResponse(1);
+//        Future<String> getApiResponseFuture = executorService.submit(getApiResponse);
+//        System.out.println("Finished api call : " + (System.currentTimeMillis()-startT1));
+//        if (!executorService.isTerminated()){
+//            long startT2 = System.currentTimeMillis();
+//            System.out.println("Started getting questions : "+ startT2);
+//            qProvider.getQuestions(getApiResponseFuture.get());
+//            System.out.println("Finished getting question " + (System.currentTimeMillis()-startT2));
+//        }
+//        System.exit(0);
+
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        printWelcome();
+        int difficulty =  chooseDifficulty();
+        Callable<String> getApiResponseCallable = () -> qProvider.apiResponse(difficulty);
+        Future<String> getApiResponseFuture = executorService.submit(getApiResponseCallable);
         System.out.println("Please enter your name : ");
         String name = scanner.next();
         do {
             printRules();
-            List<Question> questionList = new ArrayList<>();
-            try {
-                questionList= qProvider.getQuestions(chooseDifficulty());
-            } catch (IOException ioException) {
-                System.out.println("Please choose only one of the given number..let's try again!");
-            } catch (ParseException parseException) {
-                System.out.println("Something went wrong..let's try again!");
+            System.out.println("Ready to start?");
+            String answer = scanner.next();
+            if (answer.equalsIgnoreCase("y")){
+                System.out.println("Ok, let's start the game!");
+                List<Question> questionList = new ArrayList<>();
+                try {
+                    questionList= qProvider.getQuestions(getApiResponseFuture.get());
+                } catch (IOException ioException) {
+                    System.out.println("Please choose only one of the given number..let's try again!");
+                } catch (ParseException parseException) {
+                    System.out.println("Something went wrong..let's try again!");
+                }
+                Game game = new Game(new Player(name), questionList);
+                game.playGame();
+                playGame=playAgain();
+            }else {
+                playGame=false;
             }
-            Game game = new Game(new Player(name), questionList);
-            game.playGame();
-            playGame=playAgain();
         } while (playGame);
     }
 
@@ -84,20 +112,4 @@ public class Main {
         System.out.println("If you reached the upper mentioned checkpoints, you can keep the money earned at checkpoint!");
         System.out.println("You will be able to use 3 lifelines with 50-50 option, after that... you are on your own!");
     }
-
-//    private static synchronized List<Question> questions(int difficulty){
-//        //TODO
-//        QuestionsProviderService qProvider = new QuestionsProviderService();
-//        Runnable runnable = () -> {
-//            List<Question> questionList = new ArrayList<>();
-//            try {
-//                questionList= qProvider.getQuestions(difficulty);
-//            } catch (IOException ioException) {
-//                System.out.println("Please choose only one of the given number..let's try again!");
-//            } catch (ParseException parseException) {
-//                System.out.println("Something went wrong..let's try again!");
-//            }
-//        };
-//        return null;
-//    }
 }
