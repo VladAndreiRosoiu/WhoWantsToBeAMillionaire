@@ -41,16 +41,14 @@ public class QuestionsProviderService {
             }
             scanner.close();
             return line.toString();
-        } else {
-            return null;
         }
+        return null;
     }
 
-    public List<Question> getQuestions(/*int difficulty*/ String apiResponse) throws IOException, ParseException {
+    public List<Question> getQuestions(String apiResponse) throws ParseException {
         List<Question> questions = new ArrayList<>();
         List<Answer> wrongAnswerList = new ArrayList<>();
         JSONParser jsonParser = new JSONParser();
-//        JSONObject jsonObject = (JSONObject) jsonParser.parse(apiResponse(difficulty));
         JSONObject jsonObject = (JSONObject) jsonParser.parse(apiResponse);
         JSONArray jsonArray = (JSONArray) jsonObject.get("results");
         for (Object object : jsonArray) {

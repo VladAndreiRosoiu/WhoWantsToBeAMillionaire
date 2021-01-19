@@ -4,7 +4,7 @@ package ro.jademy.millionaire.models;
 import java.util.*;
 
 public class Game {
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     private final Player player;
     private final List<Question> questions;
     private Question currentQuestion;
@@ -41,19 +41,15 @@ public class Game {
 
 
     public void playGame() {
-        for (Question question : questions) {
-            System.out.println(question.getCorrectAnswer().getText());
-        }
-
+        System.out.println("Ok " + player.getName() + ", let's see if you can beat the game!");
         do {
             currentLevel = LEVEL_LIST.get(levelNumber);
             currentQuestion = questions.get(levelNumber);
             printQuestion();
             printAnsweringOptions();
-            doAnsweringOptions();
-            scanner.skip("\n");
-            String answer = scanner.nextLine();
-            validateAnswer(answer);
+            String choice = scanner.nextLine();
+            String finalAnswer = doAnsweringOptions(choice);
+            validateAnswer(finalAnswer);
             if (levelNumber == 4 || levelNumber == 9 || levelNumber == 13) {
                 printQuitOption();
                 String quitOption = scanner.next();
@@ -64,14 +60,12 @@ public class Game {
                 gameWon();
             }
         } while (!player.isWrongGuess());
-
-
     }
 
     private void printQuestion() {
         System.out.println();
         System.out.println("Question number " + currentLevel.getLevelNumber() + " for " + currentLevel.getReward() + " $!");
-        System.out.println(currentQuestion.getCategoryText());
+        System.out.println("Question category : " + currentQuestion.getCategoryText());
         System.out.println(currentQuestion.getQuestionText());
         for (int i = 0; i < currentQuestion.getAllAnswers().size(); i++) {
             System.out.println(((char) (65 + i)) + "-" + currentQuestion.getAllAnswers().get(i).getText());
@@ -79,29 +73,17 @@ public class Game {
     }
 
     private void printAnsweringOptions() {
-        System.out.println("You have 2 choices:");
-        System.out.println("Press 1 to use one of your lifelines and to remove 2 of the answers!");
-        System.out.println("Press 2 to answer directly!");
+        System.out.println();
+        System.out.println("Press * to use one of your lifelines or answer directly!");
     }
 
-    private void doAnsweringOptions() {
-        try {
-            int choice = scanner.nextInt();
-            if (choice == 1) {
-                useLifeLine();
-                System.out.println("Please enter answer:");
-            } else if (choice == 2) {
-                System.out.println("Please enter answer:");
-            } else {
-                System.out.println("Unknown choice!");
-                printAnsweringOptions();
-                doAnsweringOptions();
-            }
-        } catch (InputMismatchException inputMismatchException) {
-            System.out.println("Wrong input!");
-            printAnsweringOptions();
-            scanner = new Scanner(System.in);
-            doAnsweringOptions();
+    private String doAnsweringOptions(String choice) {
+        if (choice.equalsIgnoreCase("*")) {
+            useLifeLine();
+            System.out.println("Please enter you answer : ");
+            return scanner.nextLine();
+        } else {
+            return choice;
         }
     }
 
@@ -155,12 +137,12 @@ public class Game {
         if (choice.equalsIgnoreCase("Q")) {
             gameOver();
         } else {
-            System.out.println("Great! Let's go on!");
+            System.out.println("Great, " + player.getName() + "! Let's go on!");
         }
     }
 
     private void gameOver() {
-        System.out.println("Game Over!!!");
+        System.out.println("Game Over, "+player.getName()+"!");
         System.out.println("You have won " + currentLevel.getRewardBreakout() + " $!");
         player.setWrongGuess(true);
     }
