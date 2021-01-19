@@ -7,15 +7,16 @@ import ro.jademy.millionaire.models.Question;
 import ro.jademy.millionaire.services.QuestionsProviderService;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 
 public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
-    private static boolean playGame;
 
     public static void main(String[] args) throws ParseException, IOException, ExecutionException, InterruptedException {
 
@@ -40,20 +41,21 @@ public class Main {
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         printWelcome();
-        int difficulty =  chooseDifficulty();
+        int difficulty = chooseDifficulty();
         Callable<String> getApiResponseCallable = () -> qProvider.apiResponse(difficulty);
         Future<String> getApiResponseFuture = executorService.submit(getApiResponseCallable);
         System.out.println("Please enter your name : ");
         String name = scanner.next();
+        boolean playGame;
         do {
             printRules();
             System.out.println("Ready to start?");
             String answer = scanner.next();
-            if (answer.equalsIgnoreCase("y")){
+            if (answer.equalsIgnoreCase("y")) {
                 System.out.println("Ok, let's start the game!");
                 List<Question> questionList = new ArrayList<>();
                 try {
-                    questionList= qProvider.getQuestions(getApiResponseFuture.get());
+                    questionList = qProvider.getQuestions(getApiResponseFuture.get());
                 } catch (IOException ioException) {
                     System.out.println("Please choose only one of the given number..let's try again!");
                 } catch (ParseException parseException) {
@@ -61,9 +63,9 @@ public class Main {
                 }
                 Game game = new Game(new Player(name), questionList);
                 game.playGame();
-                playGame=playAgain();
-            }else {
-                playGame=false;
+                playGame = playAgain();
+            } else {
+                playGame = false;
             }
         } while (playGame);
     }

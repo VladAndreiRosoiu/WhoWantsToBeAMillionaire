@@ -16,7 +16,7 @@ public class Question {
         this.questionText = questionText;
         this.wrongAnswers = wrongAnswers;
         this.correctAnswer = correctAnswer;
-        this.allAnswers=shuffleAnswers();
+        this.allAnswers = shuffleAnswers();
     }
 
     public String getCategoryText() {
@@ -35,7 +35,7 @@ public class Question {
         return correctAnswer;
     }
 
-    private List<Answer> shuffleAnswers(){
+    private List<Answer> shuffleAnswers() {
         List<Answer> shuffledAnswers = new ArrayList<>();
         shuffledAnswers.add(correctAnswer);
         shuffledAnswers.addAll(wrongAnswers);

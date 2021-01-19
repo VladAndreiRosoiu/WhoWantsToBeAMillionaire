@@ -6,7 +6,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        this.wrongGuess=false;
+        this.wrongGuess = false;
     }
 
     public String getName() {

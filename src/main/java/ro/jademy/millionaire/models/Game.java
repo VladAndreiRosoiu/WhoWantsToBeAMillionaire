@@ -45,27 +45,25 @@ public class Game {
             System.out.println(question.getCorrectAnswer().getText());
         }
 
-            do {
-                currentLevel = LEVEL_LIST.get(levelNumber);
-                currentQuestion = questions.get(levelNumber);
-                printQuestion();
-                printAnsweringOptions();
-                doAnsweringOptions();
-                scanner.skip("\n");
-                String answer = scanner.nextLine();
-                validateAnswer(answer);
-                if (levelNumber == 4 || levelNumber == 9 || levelNumber == 13) {
-                    printQuitOption();
-                    String quitOption = scanner.next();
-                    doQuitOption(quitOption);
-                }
-                levelNumber++;
-                if (levelNumber == 15 && !player.isWrongGuess()) {
-                    gameWon();
-                }
-            } while (!player.isWrongGuess());
-
-
+        do {
+            currentLevel = LEVEL_LIST.get(levelNumber);
+            currentQuestion = questions.get(levelNumber);
+            printQuestion();
+            printAnsweringOptions();
+            doAnsweringOptions();
+            scanner.skip("\n");
+            String answer = scanner.nextLine();
+            validateAnswer(answer);
+            if (levelNumber == 4 || levelNumber == 9 || levelNumber == 13) {
+                printQuitOption();
+                String quitOption = scanner.next();
+                doQuitOption(quitOption);
+            }
+            levelNumber++;
+            if (levelNumber == 15 && !player.isWrongGuess()) {
+                gameWon();
+            }
+        } while (!player.isWrongGuess());
 
 
     }
@@ -87,7 +85,7 @@ public class Game {
     }
 
     private void doAnsweringOptions() {
-        try{
+        try {
             int choice = scanner.nextInt();
             if (choice == 1) {
                 useLifeLine();
@@ -99,7 +97,7 @@ public class Game {
                 printAnsweringOptions();
                 doAnsweringOptions();
             }
-        }catch (InputMismatchException inputMismatchException){
+        } catch (InputMismatchException inputMismatchException) {
             System.out.println("Wrong input!");
             printAnsweringOptions();
             scanner = new Scanner(System.in);
